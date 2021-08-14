@@ -6,11 +6,16 @@ import java.awt.Rectangle;
 class Cell extends Rectangle {
     static int size = 35;
     int elevation;
+    String cellType;
 
-    public Cell(int x, int y, int z){
+    public Cell(int x, int y, int z, String type){
         super(x, y, size, size);
+       if(type != "building"){
         elevation = z;
+       }
+        cellType = type;
     }
+   
 
     void paint(Graphics g, Point mousePos){
         if(contains(mousePos)){
@@ -34,7 +39,22 @@ class Cell extends Rectangle {
         }
     }
     public Color getColour(){
-        int zNum = (int) (((this.elevation + 500)/6500.0) * 255.0);
-        return new Color(zNum, zNum, zNum);
+       // int zNum = (int) (((this.elevation + 500)/6500.0) * 255.0);
+      //  return new Color(zNum, zNum, zNum);
+      if(cellType == "road"){
+          return Color.gray;
+      }
+      if(cellType == "water"){
+        return Color.blue;
+        }
+      if(cellType == "grass"){
+        return Color.green;
+        }
+      if(cellType == "mountain"){
+        return Color.yellow;
+        }
+      else{
+        return Color.red;
+        }
     }
 }
