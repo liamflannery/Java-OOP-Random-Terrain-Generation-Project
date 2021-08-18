@@ -7,35 +7,33 @@ class Grid {
     public Grid(){
         for(int i = 0; i < cells.length; i++){
             for(int j = 0; j < cells[i].length; j++){
-                cells[i][j] = new Cell(10+35*i,10+35*j, setElevation(), setType());
+                cells[i][j] = setCell(10+35*i,10+35*j);
             }
         }
     }
-    private int setElevation(){
-        return (int)(((Math.random() * 6500) - 500));
-    }
-    private String setType(){
+    private Cell setCell(int x, int y){
         double typeSelector = Math.random();
         if(typeSelector < 0.4){
-            return "grass";
+            return new Grass(x, y);
         }
         if(typeSelector < 0.65){
-            return "mountain";
+            return new Mountain(x, y);
         }
         if(typeSelector < 0.85){
-            return "water";
+            return new Water(x, y);
         }
         if(typeSelector < 0.95){
-            return "road";
+            return new Road(x, y);
         }
         else{
-            return "building";
+            return new Building(x, y);
         }
     }
+
     public void paint(Graphics g, Point mousePos){
         for(int i = 0; i < cells.length; i++){
             for(int j = 0; j < cells[i].length; j++){
-                cells[i][j].paint(g, mousePos);
+                cells[i][j].paint(g, mousePos, cells[i][j].getColour());
             }
         }
 
