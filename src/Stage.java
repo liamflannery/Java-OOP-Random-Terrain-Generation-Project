@@ -1,11 +1,14 @@
 import java.awt.Graphics;
 import java.awt.Point;
 
+import javax.swing.JLabel;
+
 public class Stage {
     Grid grid;
     Actor train;
     Actor car;
     Actor boat;
+    Cell currentCell;
 
     public Stage() {
         grid = new Grid();
@@ -19,5 +22,7 @@ public class Stage {
         train.paint(g);
         car.paint(g);
         boat.paint(g);
+        g.drawString("test string", 750, 50);
+
     }
 }

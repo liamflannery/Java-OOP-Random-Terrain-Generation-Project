@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+
 class Cell extends Rectangle {
     static int size = 35;
     int elevation;
@@ -20,7 +21,10 @@ class Cell extends Rectangle {
     void paint(Graphics g, Point mousePos){
         if(contains(mousePos)){
             g.setColor(Color.GRAY);
-        } else {
+            
+
+        } 
+        else {
             g.setColor(getColour());
             
         }
