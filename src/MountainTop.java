@@ -1,17 +1,17 @@
 import java.awt.Color;
-public class Mountain extends Cell{
+public class MountainTop extends Cell{
 
     int xPos;
     int yPos;
     Color cellColour; 
     int elevation;  
 
-    public Mountain(int x, int y, int inElevation) {
+    public MountainTop(int x, int y) {
         super(x, y);
         xPos = x;
         yPos = y;
         cellColour = Color.yellow;
-        elevation = inElevation;
+        elevation = 6000;
         //TODO Auto-generated constructor stub
     }
 
