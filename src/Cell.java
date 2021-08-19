@@ -6,15 +6,10 @@ import java.awt.Rectangle;
 
 class Cell extends Rectangle {
     static int size = 35;
-    //int elevation;
-    //String cellType;
+    int elevation;
 
     public Cell(int x, int y){
         super(x, y, size, size);
-     /*  if(type != "building"){
-        elevation = z;
-       }
-        cellType = type;*/
     }
    
 
@@ -45,12 +40,20 @@ class Cell extends Rectangle {
     }
     public Color elevationPaint(int elevation, Color colour){
         float normElevation = (float)(elevation * 1.0 + 500) / 6500;
-        if(normElevation < 0.3){
-            normElevation = 0.3f;
-        }
+        normElevation = (normElevation * 0.7f) + 0.3f;
         float red = (float) (colour.getRed() / 255.0);
         float green = (float) (colour.getGreen() / 255.0);
         float blue = (float) (colour.getBlue() / 255.0);
         return new Color(red * normElevation, green * normElevation, blue * normElevation);
     }
+    public String toString(){
+        return getClass().getName();
+    }
+    public String getElevation(){
+        return this.elevation + "";
+    }
+    public int setElevation(){
+        return (int)(((Math.random() * 6500) - 500));
+    }
+   
 }

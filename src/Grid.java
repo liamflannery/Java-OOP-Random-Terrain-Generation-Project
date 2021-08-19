@@ -36,11 +36,23 @@ class Grid {
                 cells[i][j].paint(g, mousePos, cells[i][j].getColour());
             }
         }
-
     }
+
+    public Cell currentCell(Point mousePos){
+        for(int i = 0; i < cells.length; i++){
+            for(int j = 0; j < cells[i].length; j++){
+                if(cells[i][j].contains(mousePos)){
+                    return cells[i][j];
+                }
+            }
+        }
+        return null;
+    }
+   
    
 
     public Cell cellAtColRow(int c, int r) {
         return cells[c][r];
     }
+    
 }

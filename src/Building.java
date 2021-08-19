@@ -16,5 +16,8 @@ public class Building extends Cell{
     public Color getColour(){
         return cellColour;
     }
+    public String getElevation(){
+        return "";
+    }
     
 }

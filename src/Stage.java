@@ -22,7 +22,14 @@ public class Stage {
         train.paint(g);
         car.paint(g);
         boat.paint(g);
-        g.drawString("test string", 750, 50);
+        try{
+            g.drawString(grid.currentCell(mouseLoc).toString(), 750, 50);
+            g.drawString(grid.currentCell(mouseLoc).getElevation(), 750, 60);
+        }
+        catch(Exception e){
+            //System.out.println("No cell");
+        }
+        
 
     }
 }

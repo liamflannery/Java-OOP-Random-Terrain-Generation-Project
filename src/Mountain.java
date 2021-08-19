@@ -18,9 +18,8 @@ public class Mountain extends Cell{
     public Color getColour(){
         return elevationPaint(elevation, cellColour);
     }
-
-    public int setElevation(){
-        return (int)(((Math.random() * 6500) - 500));
+    public String getElevation(){
+        return this.elevation + "";
     }
-    
+  
 }
