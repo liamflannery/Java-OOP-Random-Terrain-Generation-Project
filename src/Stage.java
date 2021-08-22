@@ -19,12 +19,14 @@ public class Stage {
 
     public void paint(Graphics g, Point mouseLoc) {
         grid.paint(g, mouseLoc);
-        train.paint(g);
+        /*train.paint(g);
         car.paint(g);
-        boat.paint(g);
+        boat.paint(g);*/
         try{
             g.drawString(grid.currentCell(mouseLoc).toString(), 750, 50);
-            g.drawString(grid.currentCell(mouseLoc).getElevation(), 750, 60);
+            if(grid.currentCell(mouseLoc).getElevation() > -1000){
+                g.drawString(grid.currentCell(mouseLoc).getElevation() + "", 750, 60);
+            }
         }
         catch(Exception e){
             //System.out.println("No cell");

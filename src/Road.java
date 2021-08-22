@@ -11,14 +11,13 @@ public class Road extends Cell{
         xPos = x;
         yPos = y;
         cellColour = Color.gray;
-        elevation = setElevation();
         //TODO Auto-generated constructor stub
     }
     public Color getColour(){
         return elevationPaint(elevation, cellColour);
     }
-    public String getElevation(){
-        return this.elevation + "";
+    public int getElevation(){
+        return this.elevation;
     }
     
 }

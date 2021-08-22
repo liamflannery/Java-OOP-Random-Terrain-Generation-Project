@@ -49,11 +49,12 @@ class Cell extends Rectangle {
     public String toString(){
         return getClass().getName();
     }
-    public String getElevation(){
-        return this.elevation + "";
+    public int getElevation(){
+        return this.elevation;
     }
-    public int setElevation(){
-        return (int)(((Math.random() * 6500) - 500));
+   public int setElevation(int inElevation){
+        elevation = inElevation;
+        return elevation;
     }
    
 }

@@ -6,20 +6,24 @@ public class Grass extends Cell{
     Color cellColour; 
     int elevation;  
 
-    public Grass(int x, int y) {
+    public Grass(int x, int y, int inElevation) {
         super(x, y);
         xPos = x;
         yPos = y;
         cellColour = Color.green;
-        elevation = setElevation();
+        elevation = setElevation(inElevation);
         //TODO Auto-generated constructor stub
     }
     public Color getColour(){
         return elevationPaint(elevation, cellColour);
     }
 
-    public String getElevation(){
-        return this.elevation + "";
+    public int getElevation(){
+        return this.elevation;
+    }
+    public int setElevation(int inElevation){
+        elevation = inElevation;
+        return elevation;
     }
     
 }

@@ -10,7 +10,7 @@ public class Mountain extends Cell{
         super(x, y);
         xPos = x;
         yPos = y;
-        cellColour = Color.yellow;
+        cellColour = Color.gray;
         elevation = inElevation;
         //TODO Auto-generated constructor stub
     }
@@ -18,8 +18,8 @@ public class Mountain extends Cell{
     public Color getColour(){
         return elevationPaint(elevation, cellColour);
     }
-    public String getElevation(){
-        return this.elevation + "";
+    public int getElevation(){
+        return this.elevation;
     }
   
 }
