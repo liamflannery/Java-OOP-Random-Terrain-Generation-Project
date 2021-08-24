@@ -13,6 +13,7 @@ class Grid {
     ArrayList<String> doNotReplaceMT = new ArrayList<String>();
     ArrayList<String> doNotReplaceRS = new ArrayList<String>();
     ArrayList<String> doNotReplaceRo = new ArrayList<String>();
+    int[][] directionPoints;
 
     public Grid(){
         //For each type of new cell, defines which cells they cannot overwrite
@@ -23,12 +24,14 @@ class Grid {
         doNotReplaceRo.add("MountainTop");
         doNotReplaceRo.add("Water");
         
-        probMountainT = 0.02f;
-        probMountainC = 0.03f;
-        probMountainCT = 0.95f;
+        probMountainT = 0.005f;
+        probMountainC = 0.00f;
+        probMountainCT = 1f;
         probRiverS = 0.02f;
         probRoad = 0.01f;
         probBuilding = 0.005f;
+
+        directionPoints = new int[][]{{-1,-1}, {-1,0}, {-1,1},  {0,-1},{0,1}, {1,-1},  {1,0},  {1,1}};
 
         setCell();
     }
@@ -41,6 +44,7 @@ class Grid {
                 
             }
         } 
+        /*
         //Form mountains around the peaks
        for(int i = 0; i < cells.length; i++){
             for(int j = 0; j < cells[i].length; j++){
@@ -49,7 +53,9 @@ class Grid {
                 }
                 
             }
-        }
+        }  
+        
+        /*
              //Grass elevation set
        for(int i = 0; i < cells.length; i++){
         for(int j = 0; j < cells[i].length; j++){
@@ -171,22 +177,22 @@ class Grid {
             return cells[x][y];
         }
     }
-    private ArrayList<Cell> surrounding(int x, int y){
+    public ArrayList<Cell> surrounding(int x, int y){
         ArrayList<Cell> surroundingCells = new ArrayList<Cell>();
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
-                if(x + (i - 1) < 0 || x + (i - 1) > 19 || y + (j - 1) < 0 || y + (j - 1) > 19 || (x + (i - 1) == x && y + (j-1) == y)){
-                    surroundingCells.add(null);
-                }
-                else{
-                    surroundingCells.add(cells[x + (i-1)][y + (j -1)]);
+        for(int[] direction: directionPoints){
+            int cx = x + direction[0];
+            int cy = y + direction[1];
+            if(cy >=0 && cy < cells.length){
+                if(cx >= 0 && cx < cells[cy].length){
+                    surroundingCells.add(cells[cx][cy]);
                 }
             }
         }
+        
         return surroundingCells;
     }
   
-    private boolean surroundingContains(int x, int y, String name){
+    public boolean surroundingContains(int x, int y, String name){
         ArrayList<Cell> surroundingCells = surrounding(x,y);
         for(Cell i: surroundingCells){
             if(i != null){
@@ -197,14 +203,10 @@ class Grid {
         }
         return false;
     }
-    private Cell surroundingLowest(int x, int y){
+    public Cell surroundingLowest(int x, int y){
         ArrayList<Cell> surroundingCells = surrounding(x,y);
-        Cell currentLowest = new Grass(0,0,0);
-        for(Cell i: surroundingCells){
-            if(i != null){
-                currentLowest = i;
-            }
-        }
+        Cell currentLowest = new Grass(0,0,6001);
+       
         for(Cell i: surroundingCells){
             if(i != null){
                 if(i.getElevation() < currentLowest.getElevation()){
