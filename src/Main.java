@@ -34,9 +34,10 @@ class Main extends JFrame {
         this.setVisible(true);
     }
 
-    public void run() {
+    public void run() throws InterruptedException {
         while (true) {
             this.repaint();
+            Thread.sleep(20);
         }
     }
 }

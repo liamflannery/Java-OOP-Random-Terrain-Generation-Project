@@ -3,7 +3,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 class Grid {
-    Cell[][] cells = new Cell[20][20];
+    public Cell[][] cells = new Cell[20][20];
     float probMountainT;
     float probMountainC;
     float probMountainCT;
@@ -27,11 +27,11 @@ class Grid {
         probMountainT = 0.005f;
         probMountainC = 0.00f;
         probMountainCT = 1f;
-        probRiverS = 0.02f;
+        probRiverS = 0.01f;
         probRoad = 0.01f;
         probBuilding = 0.005f;
 
-        directionPoints = new int[][]{{-1,-1}, {-1,0}, {-1,1},  {0,-1},{0,1}, {1,-1},  {1,0},  {1,1}};
+        directionPoints = new int[][]{{-1,-1}, {-1,0}, {-1,1},  {0,-1},{0,1}, {1,-1},  {1,0},  {1,1}, {0,0}};
 
         setCell();
     }
@@ -44,7 +44,7 @@ class Grid {
                 
             }
         } 
-        /*
+        
         //Form mountains around the peaks
        for(int i = 0; i < cells.length; i++){
             for(int j = 0; j < cells[i].length; j++){
@@ -55,7 +55,7 @@ class Grid {
             }
         }  
         
-        /*
+        
              //Grass elevation set
        for(int i = 0; i < cells.length; i++){
         for(int j = 0; j < cells[i].length; j++){
@@ -136,16 +136,18 @@ class Grid {
             return surroundingHeight(x, y);
         }
     }
+    int count = 100;
     private Cell riverSource(int x, int y){
         double typeSelector = Math.random();
-        if(cells[x][y].getElevation() < 0 || typeSelector < probRiverS){
-            return new Water(10 + 35 * x, 10 + 35 * y, cells[x][y].getElevation());
+        if(typeSelector < probRiverS && count > 0){
+            count--;
+            return new Water(10 + 35 * x, 10 + 35 * y, cells[x][y].getElevation(), surroundingLowest(x, y), this, count);
         }
         else{
             return cells[x][y];
         }
     }
-   private void addRiver(int x, int y){
+  /* private void addRiver(int x, int y){
         Cell nearLowest;
         int nearLowestx = 0;
         int nearLowesty = 0;
@@ -153,7 +155,7 @@ class Grid {
         nearLowestx = (nearLowest.x - 10) / 35;
         nearLowesty = (nearLowest.y - 10) / 35;
         cells[nearLowestx][nearLowesty] = new Water(10 + 35 * nearLowestx, 10 + 35 * nearLowesty, cells[nearLowestx][nearLowesty].getElevation()); 
-    }
+    }*/
             
    
     private Cell addRoad(int x, int y){
