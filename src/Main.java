@@ -28,10 +28,9 @@ class Main extends JFrame {
 
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         Main window = new Main();
         window.run();
-        Thread.sleep(20);
     }
 
     private Main() {
@@ -42,9 +41,10 @@ class Main extends JFrame {
         this.setVisible(true);
     }
 
-    public void run() {
+    public void run() throws InterruptedException{
         while (true) {
             this.repaint();
+            Thread.sleep(20);
         }
     }
 }
