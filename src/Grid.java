@@ -1,6 +1,8 @@
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.IntUnaryOperator;
 
 class Grid {
     Cell[][] cells = new Cell[20][20];
@@ -11,6 +13,7 @@ class Grid {
                 cells[i][j] = new Cell(colToLabel(i), j, 10+35*i, 10+35*j);
             }
         }
+       
     }
 
     private char colToLabel(int col) {
@@ -22,11 +25,10 @@ class Grid {
     }
 
     public void paint(Graphics g, Point mousePos) {
-        for(int i = 0; i < cells.length; i++) {
-            for(int j = 0; j < cells[i].length; j++) { 
-                cells[i][j].paint(g, mousePos);
-            }
-        }
+        Consumer<Cell> paint = cell -> {
+            cell.paint(g, mousePos);
+        };
+        doToEachCell(paint);
     }
 
     private Optional<Cell> cellAtColRow(int c, int r) {
@@ -49,5 +51,14 @@ class Grid {
             }
         }
         return Optional.empty();
+       
     }
+    public void doToEachCell(Consumer<Cell> func) {
+        for(int i=0; i < cells.length; i++) {
+            for(int j=0; j < cells[i].length; j++) {
+                func.accept(cells[i][j]);
+            }
+        }
+      }
+    
 }

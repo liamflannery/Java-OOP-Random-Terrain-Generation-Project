@@ -14,12 +14,7 @@ class Main extends JFrame {
         public App() {
             setPreferredSize(new Dimension(1024, 720));
             stage = new Stage();
-            try {
-                stage = StageReader.readStage("data/stage1.rvb");
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            stage = StageReader.readStage("data/stage1.rvb");
         }
 
         @Override
@@ -29,9 +24,10 @@ class Main extends JFrame {
 
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws InterruptedException {
         Main window = new Main();
         window.run();
+        Thread.sleep(20);
     }
 
     private Main() {
