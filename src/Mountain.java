@@ -10,7 +10,7 @@ public class Mountain extends Cell{
         super(x, y);
         xPos = x;
         yPos = y;
-        cellColour = Color.gray;
+        cellColour = Color.yellow;
         elevation = inElevation;
         //TODO Auto-generated constructor stub
     }

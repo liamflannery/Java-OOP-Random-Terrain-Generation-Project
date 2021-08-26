@@ -10,7 +10,7 @@ public class Building extends Cell{
         super(x, y);
         xPos = x;
         yPos = y;
-        cellColour = Color.red;
+        cellColour = new Color(102, 51, 0);
         //TODO Auto-generated constructor stub
     }
     public Color getColour(){

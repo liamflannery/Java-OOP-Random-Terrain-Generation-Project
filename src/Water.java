@@ -12,8 +12,7 @@ public class Water extends Cell{
         yPos = y;
         cellColour = Color.blue;
         elevation = setElevation(inElevation);
-        if(!(lowest.x == x && lowest.y == y) && !(lowest.getClass().getName().equals("Water"))){
-            System.out.println(lowest.x + "," + lowest.y );
+        if(!(lowest.x == x && lowest.y == y) && !(lowest.getClass().getName().equals("Water")) && count > 0){
             int nearLowestx = (lowest.x - 10) / 35;
             int nearLowesty = (lowest.y - 10) / 35;
             Cell nextLowest = g.surroundingLowest(nearLowestx, nearLowesty);

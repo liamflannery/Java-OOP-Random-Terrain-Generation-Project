@@ -10,7 +10,7 @@ public class MountainTop extends Cell{
         super(x, y);
         xPos = x;
         yPos = y;
-        cellColour = Color.white;
+        cellColour = Color.yellow;
         elevation = 6000;
         //TODO Auto-generated constructor stub
     }

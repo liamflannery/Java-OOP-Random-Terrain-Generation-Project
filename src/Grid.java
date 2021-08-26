@@ -10,26 +10,38 @@ class Grid {
     float probRiverS;
     float probRoad;
     float probBuilding;
+    int mountainTopCount;
+    int elSmooth;
+    int riverLength;
     ArrayList<String> doNotReplaceMT = new ArrayList<String>();
     ArrayList<String> doNotReplaceRS = new ArrayList<String>();
     ArrayList<String> doNotReplaceRo = new ArrayList<String>();
+    ArrayList<String> doNotReplaceB = new ArrayList<String>();
+    ArrayList<Cell> mountainTops = new ArrayList<Cell>();
     int[][] directionPoints;
 
     public Grid(){
         //For each type of new cell, defines which cells they cannot overwrite
         doNotReplaceMT.add("MountainTop");
+        
         doNotReplaceRS.add("MountainTop");
-        //doNotReplaceRS.add("Water");
+        
         doNotReplaceRo.add("Mountain");
         doNotReplaceRo.add("MountainTop");
         doNotReplaceRo.add("Water");
+
+        doNotReplaceB.add("MountainTop");
+        doNotReplaceB.add("Water");
         
-        probMountainT = 0.005f;
-        probMountainC = 0.00f;
-        probMountainCT = 1f;
-        probRiverS = 0.01f;
-        probRoad = 0.01f;
-        probBuilding = 0.005f;
+        probMountainT = 0.03f;
+        mountainTopCount = 1;
+        probMountainC = 0.01f;
+        probMountainCT = 0.95f;
+        probRiverS = 0.05f;
+        probRoad = 0.005f;
+        probBuilding = 0.05f;
+        riverLength = 100;
+        elSmooth = 5;
 
         directionPoints = new int[][]{{-1,-1}, {-1,0}, {-1,1},  {0,-1},{0,1}, {1,-1},  {1,0},  {1,1}, {0,0}};
 
@@ -56,7 +68,7 @@ class Grid {
         }  
         
         
-             //Grass elevation set
+        //Grass elevation set
        for(int i = 0; i < cells.length; i++){
         for(int j = 0; j < cells[i].length; j++){
             if(doNotReplaceRS.contains(cells[i][j].getClass().getName()) != true){
@@ -75,17 +87,8 @@ class Grid {
                 
             }
         } 
-        /*
-        //Add in rivers
-        for(int i = 0; i < cells.length; i++){
-            for(int j = 0; j < cells[i].length; j++){
-                if(cells[i][j].getClass().getName().equals("Water")){
-                    addRiver(i, j);
-                }
-                
-            }
-        }
-      /*
+        
+      
         //Add in roads
         for(int i = 0; i < cells.length; i++){
             for(int j = 0; j < cells[i].length; j++){
@@ -94,86 +97,96 @@ class Grid {
                 }
                 
             }
-        }/*
+        }
         //Add in buildings
         for(int i = 0; i < cells.length; i++){
             for(int j = 0; j < cells[i].length; j++){
-                if(doNotReplaceRS.contains(cells[i][j].getClass().getName()) != true){
+                if(doNotReplaceB.contains(cells[i][j].getClass().getName()) != true){
                     cells[i][j] = addBuildings(i,j);
                 }
                 
             }
         }
-        */
+        
    
     }
     private Cell mountainTop(int x, int y){
         double typeSelector = Math.random();
-        if(surroundingContains(x, y, "MountainTop") == false && typeSelector < probMountainT){
-            return new MountainTop(10 + 35 * x, 10 + 35 * y);
+        Cell firstMountain;
+        if(mountainTops.size() > 0){
+            firstMountain = mountainTops.get(0);
         }
         else{
-            return new Grass(10 + 35 * x, 10 + 35 * y, -500);
+            firstMountain = new Cell(toGrid(100), toGrid(100));
+        }
+        if(distance(new Cell(toGrid(x), toGrid(y)), firstMountain) < 10){
+            if(surroundingContains(x, y, "MountainTop") == false && typeSelector < probMountainT){
+                mountainTops.add(new MountainTop(toGrid(x), toGrid(y)));
+                return new MountainTop(toGrid(x), toGrid(y));
+            }
+            else{
+                return new Grass(toGrid(x), toGrid(y),-500); 
+            }
+        }
+        else if(surroundingContains(x, y, "MountainTop") == false && typeSelector < probMountainT && mountainTopCount > 0){
+            mountainTops.add(new MountainTop(toGrid(x), toGrid(y)));
+            mountainTopCount--;
+            return new MountainTop(toGrid(x), toGrid(y));
+        }
+        else{
+            return new Grass(toGrid(x), toGrid(y),-500);
         }
     }
     private Cell mountainCont(int x, int y){
         double typeSelector = Math.random();
         if(surroundingContains(x, y, "MountainTop") && typeSelector < probMountainCT){
-            return new Mountain(10 + 35 * x, 10 + 35 * y, (int) (6000 * (Math.random() * 0.3 + 0.7)));
+            return new Mountain(toGrid(x), toGrid(y), (int) (6000 * (Math.random() * 0.3 + 0.7)));
         }
         else if(surroundingContains(x, y, "Mountain") && typeSelector < probMountainC){
-            return new Mountain(10 + 35 * x, 10 + 35 * y, (int) (5000 * (Math.random() * 0.5 + 0.5)));
+            return new Mountain(toGrid(x), toGrid(y), (int) (5000 * (Math.random() * 0.5 + 0.5)));
         }
         else{
             return cells[x][y];
         }
     }
     private int grassElevation(int x, int y){
-        if(surroundingContains(x, y, "Mountain")){
-            return (int)((Math.random() * 0.1 + 0.9) * 5000);
-        }
-        else{
-            return surroundingHeight(x, y);
-        }
+        Cell closestMT = closestMT(x, y);
+        int mtDistance = distance(new Cell(toGrid(x),toGrid(y)), closestMT);
+        double sinVal = Math.PI/2 * mtDistance/elSmooth;
+        double elevation = Math.sin(sinVal) * 3250 + 2750;
+        return (int) elevation;
     }
-    int count = 100;
+    
     private Cell riverSource(int x, int y){
         double typeSelector = Math.random();
-        if(typeSelector < probRiverS && count > 0){
-            count--;
-            return new Water(10 + 35 * x, 10 + 35 * y, cells[x][y].getElevation(), surroundingLowest(x, y), this, count);
+        if(cells[x][y].getElevation() < 0 || typeSelector < probRiverS){
+            if(!(cells[x][y].getClass().getName().equals("Water"))){
+                return new Water(toGrid(x), toGrid(y), cells[x][y].getElevation(), surroundingLowest(x, y), this, riverLength);
+            }
+            else{
+                return cells[x][y];
+            }
         }
         else{
             return cells[x][y];
         }
-    }
-  /* private void addRiver(int x, int y){
-        Cell nearLowest;
-        int nearLowestx = 0;
-        int nearLowesty = 0;
-        nearLowest = surroundingLowest(x, y);
-        nearLowestx = (nearLowest.x - 10) / 35;
-        nearLowesty = (nearLowest.y - 10) / 35;
-        cells[nearLowestx][nearLowesty] = new Water(10 + 35 * nearLowestx, 10 + 35 * nearLowesty, cells[nearLowestx][nearLowesty].getElevation()); 
-    }*/
-            
+    }       
    
     private Cell addRoad(int x, int y){
         double typeSelector = Math.random();
         if(typeSelector < probRoad){
-            return new Road(10 + 35 * x, 10 + 35 * y);
+            return new Road(toGrid(x), toGrid(y));
         }
         if(cellCountDirect(x, y, "Road") == 1){
-            return new Road(10 + 35 * x, 10 + 35 * y);
+            return new Road(toGrid(x), toGrid(y));
         }
         else{
             return cells[x][y];
         }
     }
     private Cell addBuildings(int x, int y){
-        double typeSelector = Math.random();
         if(cellCountAll(x, y, "Road") < 3 && cellCountDirect(x, y, "Road") == 1 &&surroundingContains(x, y, "Building") == false){
-            return new Building(10 + 35 * x, 10 + 35 * y);
+            return new Building(toGrid(x), toGrid(y));
         }
         else{
             return cells[x][y];
@@ -222,12 +235,10 @@ class Grid {
     private int cellCountDirect(int x, int y, String name){
         ArrayList<Cell> surroundingCells = surrounding(x,y);
         int cellCount = 0;
-        for(int i = 0; i < 9 ; i++){
-            if(i % 2 != 0){
-                if(surroundingCells.get(i) != null){
-                    if(surroundingCells.get(i).getClass().getName().equals(name)){
-                        cellCount++;
-                    }
+        for(Cell i: surroundingCells){
+            if(toCells(i.x) == x || toCells(i.y) == y){
+                if(i.getClass().getName().equals(name)){
+                    cellCount++;
                 }
             }
         }
@@ -236,7 +247,7 @@ class Grid {
     private int cellCountAll(int x, int y, String name){
         ArrayList<Cell> surroundingCells = surrounding(x,y);
         int cellCount = 0;
-        for(int i = 0; i < 9 ; i++){
+        for(int i = 0; i < surroundingCells.size() ; i++){
             if(surroundingCells.get(i) != null){
                 if(surroundingCells.get(i).getClass().getName().equals(name)){
                         cellCount++;
@@ -245,45 +256,30 @@ class Grid {
         }
         return cellCount;
     }
-    private int surroundingHeight(int x, int y){
-        ArrayList<Cell> surroundingCells = surrounding(x,y);
-        int averageHeight = 0;
-        int numtoAverage = 9;
-        int currentHeight;
-        int averageCubes = 0;
-        
-        //Find average of surrounding cells
-        for(Cell i: surroundingCells){
-            if(i != null){
-                currentHeight = i.getElevation();
-                averageHeight += currentHeight; 
-            }
-        }
-        averageHeight = averageHeight/9;
-
-        //Subtract average from each cell, then set it to the power of 5, then find average of 
-        for(Cell i: surroundingCells){
-            if(i != null){
-                currentHeight = i.getElevation() - averageHeight;
-                currentHeight = (int) Math.pow(currentHeight, 2); 
-                averageCubes += currentHeight;
-            }
-        }
-        averageCubes = averageCubes/9;
-        averageCubes = (int) Math.pow(averageCubes, 1.0/2);
-        averageHeight += averageCubes;
-        return averageHeight;
-    }
-    private Cell surroundingType(int x, int y, String name){
-        ArrayList<Cell> surroundingCells = surrounding(x,y);
-        for(int i = 0; i < 9 ; i++){
-            if(surroundingCells.get(i) != null){
-                if(surroundingCells.get(i).getClass().getName().equals(name)){
-                        return surroundingCells.get(i);
+  
+    private Cell closestMT(int x, int y){
+        ArrayList<Cell> mtCopy = mountainTops;
+        if(mtCopy.size() > 0){
+            Cell currentClosest = mtCopy.get(0);
+            int currentClosestD = distance(currentClosest, new Cell(toGrid(x), toGrid(y)));
+            for(Cell i: mtCopy){
+                if(distance(i , new Cell(toGrid(x),toGrid(y))) < currentClosestD){
+                    currentClosest = i;
                 }
             }
+            return currentClosest;
         }
         return null;
+    }
+    private int distance(Cell cell1, Cell cell2){
+        if(cell1 != null && cell2 != null){
+            int xDistance = toCells(cell1.x) - toCells(cell2.x);
+            int yDistance = toCells(cell1.y) - toCells(cell2.y);
+            return (int)(Math.sqrt(xDistance * xDistance + yDistance * yDistance));
+        }
+        else{
+            return 600;
+        }
     }
     public void paint(Graphics g, Point mousePos){
         for(int i = 0; i < cells.length; i++){
@@ -304,6 +300,13 @@ class Grid {
         return null;
     }
    
+    public int toGrid(int input){
+        return 10 + 35 * input;
+    }
+
+    public int toCells (int input){
+        return (input - 10)/35;
+    }
    
 
     public Cell cellAtColRow(int c, int r) {
