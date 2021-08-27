@@ -17,7 +17,7 @@ public class Building extends Cell{
         return cellColour;
     }
     public int getElevation(){
-        return -7000;
+        return -7000; //When asked about elevation, returns an impossibly small number 
     }
     
 }

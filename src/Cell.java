@@ -38,13 +38,15 @@ class Cell extends Rectangle {
     public Color getColour(){
         return Color.black;
     }
+
+    //Changes the colour of the cell depending on its elevation (i.e. higher cells are brighter, lower cells are darker)
     public Color elevationPaint(int elevation, Color colour){
-        float normElevation = (float)(elevation * 1.0 + 500) / 6500;
-        normElevation = (normElevation * 0.7f) + 0.3f;
-        float red = (float) (colour.getRed() / 255.0);
+        float normElevation = (float)(elevation * 1.0 + 500) / 6500; //Normalises the elevation so it is all positive
+        normElevation = (normElevation * 0.7f) + 0.3f; //Constrains the elevation so there's no fully black cells
+        float red = (float) (colour.getRed() / 255.0); //Turns the rgb values of the current cell colour into ratios (i.e. preserves the colour)
         float green = (float) (colour.getGreen() / 255.0);
         float blue = (float) (colour.getBlue() / 255.0);
-        return new Color(red * normElevation, green * normElevation, blue * normElevation);
+        return new Color(red * normElevation, green * normElevation, blue * normElevation); //Multiplies the ratios by the normalised elevation (i.e. changes the shade)
     }
     public String toString(){
         return getClass().getName();
