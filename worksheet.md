@@ -168,8 +168,7 @@ Such a method needs to take in a `Point` and return back a `Cell`.  It will do a
 
 However, there are some areas on our stage where there are no cells, not to mention what to do when a `null` point is passed in!
 
-So, we need a method that _might_ return a `Cell`.  What should it do when it can't find a cell?  Return `null`?  Definitely not!!!!  You are just asking for a asking for null-pointer exception if you do that.  Instead, we will use the `Optional` generic container (https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html).  
-
+So, we need a method that _might_ return a `Cell`.  What should it do when it can't find a cell?  Return `null`?  Definitely not!!!!  You are just asking for a asking for null-pointer exception if you do that.  Instead, we will use the `Optional` generic container (https://docs.oracle.com/javase/8/docs/api/java/util/Optiona
 Add the following method to `Grid` that will return whatever cell is located around the point that is passed in.
 
 ~~~~~
