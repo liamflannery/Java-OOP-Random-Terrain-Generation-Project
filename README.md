@@ -1,4 +1,5 @@
 # Terrain_Generation_Assignment
+![alt text](https://github.com/liamflannery/Terrain_Generation_Assignment/img/screenshot.jpg?raw=true)
 I wanted to create natural looking terrain that would be generated as realistically as possible.
 I decided the following rules needed to be consistent accross different generations of the files, these included:
 
