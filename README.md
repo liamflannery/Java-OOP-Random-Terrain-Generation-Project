@@ -1,5 +1,13 @@
-# Terrain_Generation_Assignment
-![screenshot](./img/screenshot.png)
+# Terrain Generation Assignment
+<style>
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<img src="./img/screenshot.png" alt="screenshot" width="400"/>
+<br>
 I wanted to create natural looking terrain that would be generated as realistically as possible.
 I decided the following rules needed to be consistent accross different generations of the files, these included:
 
