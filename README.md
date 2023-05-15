@@ -1,6 +1,9 @@
 # Terrain Generation Assignment
 
-<center><img src="./img/screenshot.png" alt="screenshot" width="400" style="display:block;margin-left: auto;margin-right: auto"/></center>
+           |  
+:-------------------------:|:-------------------------:
+<img src="./img/screenshot.png" alt="screenshot" width="400" style="display:block;margin-left: auto;margin-right: auto"/> |  ![](https://...Ocean.png)
+
 <br>
 I wanted to create natural looking terrain that would be generated as realistically as possible.
 I decided the following rules needed to be consistent accross different generations of the files, these included:
