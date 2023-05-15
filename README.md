@@ -1,8 +1,18 @@
 # Terrain Generation Assignment
 
-           |  
-:-------------------------:|:-------------------------:
-<img src="./img/screenshot.png" alt="screenshot" width="400" style="display:block;margin-left: auto;margin-right: auto"/> |  ![](https://...Ocean.png)
+         
+
+
+
+
+
+<p>
+  <img src="https://github.com/liamflannery/Java-OOP-Random-Terrain-Generation-Project/assets/55472933/b190c7ed-eac9-4c36-8807-e60cda42d0a2" width="200" />
+  <img src="./img/screenshot.png" width="200" /> 
+  <img src="https://github.com/liamflannery/Java-OOP-Random-Terrain-Generation-Project/assets/55472933/6027c3d9-9056-4763-96e3-65aa7953c724" width="200" />
+  <img src="https://github.com/liamflannery/Java-OOP-Random-Terrain-Generation-Project/assets/55472933/c00b8f2a-5d52-4aa0-b35e-2b2f33b53ffa" width="200" />
+</p>
+
 
 <br>
 I wanted to create natural looking terrain that would be generated as realistically as possible.
